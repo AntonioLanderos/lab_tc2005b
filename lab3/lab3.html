@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio 1</title>
+</head>
+<body>
+    <div class="center">
+        <header>
+            <h1>Pagina personal</h1>
+            <b>Contacto</b><br>
+            Juan Antonio Landeros Velázquez | A00574000 | <em>a00574000@tec.mx</em>
+        </header>
+    </div>
+
+    <h3>Hobbies</h3>
+    <ul>
+        <li>Basquetbol</li>
+        <li>Ciclismo de Montaña</li>
+        <li>Autos</li>
+    </ul>
+    <div class="gallery">
+        <figure class="gallery_item gallery_item--1">
+            <img src="basquet.png" class="gallery_img" alt="Basquetbol";>
+        </figure>
+        <figure class="gallery_item gallery_item--2">
+            <img src="mtb.png" class="gallery_img" alt="MTB";>
+        </figure>
+        <figure class="gallery_item gallery_item--3">
+            <img src="rally.png" class="gallery_img" alt="Autos";>
+        </figure>
+    </div>
+    <h4>Preguntas a responder</h4>
+    <ol>
+        <li>¿Cuál es la diferencia entre Internet y la World Wide Web?</li>
+        <p>Internet es una red de computadoras alrededor de todo el mundo conectadas entre sí. En cambio, la web es una colección de páginas que se asienta sobre esa red de computadoras</p>
+        <li>¿Cuáles son las partes de un URL?</li>
+        <p>Una URL consta del protocolo, el nombre del dominio, la extensión del dominio, la ruta al recurso y los parámetros</p>
+        <li>¿Cuál es el propósito de los métodos HTTP: GET, HEAD, POST, PUT, PATCH, DELETE?</li>
+        <p>
+            <ul>
+                <li><strong>GET:</strong> Solicita una representación de un recurso específico. Las peticiones que usan el método GET sólo deben recuperar datos.</li>
+                <li><strong>HEAD:</strong> Pide una respuesta idéntica a la de una petición GET, pero sin el cuerpo de la respuesta.</li>
+                <li><strong>POST:</strong> Se utiliza para enviar una entidad a un recurso en específico, causando a menudo un cambio en el estado o efectos secundarios en el servidor.</li>
+                <li><strong>PUT:</strong> Reemplaza todas las representaciones actuales del recurso de destino con la carga útil de la petición.</li>
+                <li><strong>PATCH:</strong> Es utilizado para aplicar modificaciones parciales a un recurso</li>
+                <li><strong>DELETE:</strong> Borra un recurso en específico</li>
+            </ul>
+        </p>
+        <li>¿Qué método HTTP se debe utilizar al enviar un formulario HTML, por ejemplo cuando ingresas tu usuario y contraseña en algún sitio? ¿Por qué?</li>
+        <p>El método POST se debe utilizar al enviar un formulario HTML, como cuando ingresas tu usuario y contraseña en algún sitio. Esto se debe a que el método POST se utiliza para enviar una entidad a un recurso en específico, causando a menudo un cambio en el estado o efectos secundarios en el servidor</p>
+        <li>¿Qué método HTTP se utiliza cuando a través de un navegador web se accede a una página a través de un URL?</li>
+        <p>El método GET se utiliza cuando a través de un navegador web se accede a una página a través de un URL</p>
+        <li>Un servidor web devuelve una respuesta HTTP con código 200. ¿Qué significa esto? ¿Ocurrió algún error?</li>
+        <p> El código de respuesta de estado satisfactorio HTTP 200 OK indica que la solicitud ha tenido éxito</p>
+        <li>¿Es responsabilidad del desarrollador corregir un sitio web si un usuario reporta que intentó acceder al sitio y se encontró con un error 404? ¿Por qué?</li>
+        <p>Sí, es responsabilidad del desarrollador corregir un sitio web si un usuario reporta que intentó acceder al sitio y se encontró con un error 404. Los errores 404 suelen ser el resultado de enlaces rotos o páginas que se han eliminado, y es tarea del desarrollador asegurarse de que todos los enlaces del sitio web estén funcionando correctamente</p>
+        <li>¿Es responsabilidad del desarrollador corregir un sitio web si un usuario reporta que intentó acceder al sitio y se encontró con un error 500? ¿Por qué?</li>
+        <p>Sí, es responsabilidad del desarrollador corregir un sitio web si un usuario reporta que intentó acceder al sitio y se encontró con un error 500. Los errores 500 son errores del servidor, y pueden ser el resultado de problemas con el software del servidor o con el código del sitio web</p>
+        <li>¿Qué significa que un atributo HTML5 esté depreciado o desaprobado (deprecated)? Menciona algunos elementos de HTML 4 que en HTML5 estén desaprobados.</li>
+        <p>Un atributo HTML5 está depreciado o desaprobado cuando ya no se recomienda su uso en el desarrollo web porque ha sido reemplazado por una mejor alternativa. Por ejemplo: 'center', 'font', y 'strike', entre otros</p>
+        <li>¿Cuáles son las diferencias principales entre HTML 4 y HTML5?</li>
+        <p>HTML5 permite la creación de nuevos elementos y atributos, maneja mejor los elementos multimedia, y tiene una estructura más flexible que HTML4</p>
+        <li>¿Qué componentes de estructura y estilo tiene una tabla?</li>
+        <p>Una tabla en HTML se compone de varios elementos para su estructura, incluyendo 'table' para crear la tabla, 'tr' para las filas, 'td' para las celdas de datos, y 'th' para las celdas de encabezado. Para el estilo, se pueden usar atributos como border para los bordes, padding para el espacio interior de las celdas, y width y height para el ancho y alto de la tabla, entre otros.</p>
+        <li>¿Cuáles son los principales controles de una forma HTML5?</li>
+        <p>Algunos de los principales controles de un formulario en HTML5 incluyen 'input' para campos de entrada, 'textarea' para áreas de texto, 'button' para botones, 'select' para listas desplegables, y 'option' para las opciones en las listas desplegables, entre otros.</p>
+        <li>¿Qué tanto soporte HTML5 tiene el navegador que utilizas? </li>
+        <p>536 de 571</p>
+        <li>¿Cuál es el ciclo de vida de los sistemas de información?</li>
+        <p>El ciclo de vida de los sistemas de información generalmente incluye las siguientes etapas: análisis de requisitos, diseño, implementación, pruebas, despliegue y mantenimiento.</p>
+        <li>¿Cuál es el ciclo de desarrollo de sistemas de información?</li>
+        <p>El ciclo de desarrollo de sistemas de información es similar al ciclo de vida de los sistemas de información, e incluye las etapas de análisis de requisitos, diseño, codificación, pruebas, implementación y mantenimiento.</p>
+    </ol>
+    <h4>Referencias</h4>
+    <p><em>Microsoft Copilot. (2024). Desarrollo Web. Recuperado el 04/04/2024.</em></p>
+<footer>
+    <a href="https://code.visualstudio.com">VSCode</a>
+</footer>
+</body>
+</html>
