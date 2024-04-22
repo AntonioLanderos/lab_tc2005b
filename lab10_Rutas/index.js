@@ -6,39 +6,59 @@ const server = http.createServer( (request, response) => {
     console.log(request.url);
     
     switch(request.url){
-        case "/":
+        case "/index":
             response.setHeader('Content-Type', 'text/plain');
-            response.write("URL index /");
+            response.write(" /index para indice \n /tienda para ir a la tienda en linea \n /login para formulario");
             response.end();   
             break;
-        case "/test_json":
-            if(request.method == "GET"){
-                response.setHeader('Content-Type', 'application/json');
-                response.write('{code:200, msg:"Ok GET"}');
-                response.end();  
-            }else if(request.method == "POST"){
-                response.setHeader('Content-Type', 'application/json');
-                response.write('{code:200, msg:"Ok POST"}');
-                response.end();  
-            }  
-            break;
-        case "/test_html":
+        case "/tienda":
             response.setHeader('Content-Type', 'text/html');    
             response.write(`
-                <!DOCTYPE html>
-                <html lang="en">
-                <head>
-                    <meta charset="utf-8">
-                    <title>Código en HTML</title>
-                </head>
-                <body>
-                <h1>hola mundo desde node</h1>
-                </body>
-                </html>
+            <!DOCTYPE html>
+            <html lang="es">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Laboratorio 6</title>
+                <link rel="stylesheet" href="styles1.css">
+            </head>
+            <body>
+                <h1>Tienda Online</h1>
+            
+                <div class="product">
+                    <h2>Balón</h2>
+                    <label for="quantity1">Cantidad:</label>
+                    <input type="number" id="quantity1" min="0" value="0">
+                    <button onclick="calculateTotal()">Calcular Total</button>
+                    <p>Precio por unidad: $750</p>
+                </div>
+            
+                <div class="product">
+                    <h2>Camiseta Warriors</h2>
+                    <label for="quantity2">Cantidad:</label>
+                    <input type="number" id="quantity2" min="0" value="0">
+                    <button onclick="calculateTotal()">Calcular Total</button>
+                    <p>Precio por unidad: $1500</p>
+                </div>
+            
+                <div class="product">
+                    <h2>Short Lakers</h2>
+                    <label for="quantity3">Cantidad:</label>
+                    <input type="number" id="quantity3" min="0" value="0">
+                    <button onclick="calculateTotal()">Calcular Total</button>
+                    <p>Precio por unidad: $1100</p>
+                </div>
+            
+                <h2>Total a Pagar:</h2>
+                <p id="totalAmount">$0</p>
+            
+                <script src="script1.js"></script>
+            </body>
+            </html>
             `);
             response.end();   
             break;
-        case "/form_method":
+        case "/login":
             if(request.method == "GET"){
                 response.setHeader('Content-Type', 'text/html');
                 const html = fs.readFileSync(path.resolve(__dirname, './form.html'), 'utf8')
@@ -54,14 +74,10 @@ const server = http.createServer( (request, response) => {
                     body = Buffer.concat(body).toString();
                     console.log(body)
 
-                    const indice = Number(body.split('&')[0].split('=')[1]);
-                    console.log(indice);
-                    const imprimir = body.split('&')[1].split('=')[1];
-                    console.log(imprimir);
-
-                    for(var i = 1; i <= indice; i++){
-                        console.log(imprimir)
-                    }
+                    const psw = body.split('&')[0].split('=')[1];
+                    console.log(psw);
+                    const verify = body.split('&')[1].split('=')[1];
+                    console.log(verify);
 
                     response.setHeader('Content-Type', 'application/json');
                     response.statusCode = 200;
