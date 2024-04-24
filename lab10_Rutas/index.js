@@ -6,9 +6,9 @@ const server = http.createServer( (request, response) => {
     console.log(request.url);
     
     switch(request.url){
-        case "/index":
+        case "/":
             response.setHeader('Content-Type', 'text/plain');
-            response.write(" /index para indice \n /tienda para ir a la tienda en linea \n /login para formulario");
+            response.write(" / para indice \n /tienda para ir a la tienda en linea \n /login para formulario");
             response.end();   
             break;
         case "/tienda":
