@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const controller = require("../controllers/usuarios.controller.js")
 const isAuth = require('../utils/is-auth');
+const canCreate = require('../utils/can-create.js');
+const canView = require('../utils/can-view.js');
 
 router.get('/test_json', (req, res)=>{
     res.status(200).json({code: 200, msg: 'OK'});
@@ -12,6 +14,11 @@ router.post('/login', controller.do_login);
 router.get('/registro', controller.get_registro);
 router.post('/registro', controller.post_registro);
 router.get('/logged', isAuth, controller.get_logged);
+
+router.get('/logout', isAuth, canCreate, controller.logout);
+router.get('/obtener_usuarios', isAuth, canView, () => { });
+router.get('/editar_usuario', isAuth, canCreate, controller.editar_usuario);
+
 router.get('/obtener_usuarios', ()=>{});
 router.post('/obtener_usuarios', ()=>{});
 router.get('/buscar_usuario', ()=>{});

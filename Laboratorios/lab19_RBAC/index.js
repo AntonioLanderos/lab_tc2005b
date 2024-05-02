@@ -20,16 +20,6 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
 
-const mariadb = require("mariadb");
-const pool = mariadb.createPool({
-host:"127.0.0.1",
-user:"root",
-password:"Halamadrid1.",
-database: "test",
-connectionLimit:5,
-port:3307
-});
-
 app.get('/', async(request, response, next) => {
     response.setHeader('Content-Type', 'text/plain');
     response.send("Hola mundo");
@@ -73,8 +63,6 @@ app.get('/test_session_variable', async(request, response, next) => {
 app.get('/logout', async(request, response, next) => {
     request.session.destroy(() => {
         response.redirect('/'); //Este código se ejecuta cuando la sesión se elimina.
-        response.clearCookie('');
-        response.send('User logout successfully');
     });
 });
 
