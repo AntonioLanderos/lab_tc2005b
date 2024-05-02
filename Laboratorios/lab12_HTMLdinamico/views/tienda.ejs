@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <%- include('includes/css.ejs') %>
+</head>
+<body>
+    <h1>Tienda Online</h1>
+    
+    <div class="product">
+        <h2>Balón</h2>
+        <label for="quantity1">Cantidad:</label>
+        <input type="number" id="quantity1" min="0" value="0">
+        <button onclick="calculateTotal()">Calcular Total</button>
+        <p>Precio por unidad: $750</p>
+    </div>
+
+    <div class="product">
+        <h2>Camiseta Warriors</h2>
+        <label for="quantity2">Cantidad:</label>
+        <input type="number" id="quantity2" min="0" value="0">
+        <button onclick="calculateTotal()">Calcular Total</button>
+        <p>Precio por unidad: $1500</p>
+    </div>
+
+    <div class="product">
+        <h2>Short Lakers</h2>
+        <label for="quantity3">Cantidad:</label>
+        <input type="number" id="quantity3" min="0" value="0">
+        <button onclick="calculateTotal()">Calcular Total</button>
+        <p>Precio por unidad: $1100</p>
+    </div>
+
+    <h2>Total a Pagar:</h2>
+    <p id="totalAmount">$0</p>
+
+    <%- include('includes/footer') %>
+</body>
+<%- include('scripts.ejs') %>
+</html>

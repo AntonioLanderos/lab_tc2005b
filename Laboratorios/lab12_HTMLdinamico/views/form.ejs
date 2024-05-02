@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <%- include('includes/css.ejs') %>
+</head>
+<body>
+    <div class="container">
+        <h3>Login</h3>
+        <form method="POST" action="/formulario/login" id="passwordForm">
+            <div class="mb-3">
+                <label for="psw" class="form-label">Password</label>
+                <input type="password" id="psw" class="form-control" name="psw" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" placeholder="Ingresa password" required>
+
+                <label for="verify" class="form-label">Confirmar password</label>
+                <input type="password" id="verify" class="form-control" name="verify" placeholder="Ingresa password nuevamente" required>
+                </br>
+                <input type="submit">
+            </div>
+        </form>
+        <div id="message"></div>
+
+        <%- include('includes/footer.ejs') %>
+    </div>
+    <%- include('scripts.ejs') %>
+</body>
+</html>
