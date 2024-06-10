@@ -20,77 +20,39 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
 
-const mariadb = require("mariadb");
-const pool = mariadb.createPool({
-host:"127.0.0.1",
-user:"root",
-password:"Halamadrid1.",
-database: "test",
-connectionLimit:5,
-port:3307
+app.get('/set-language/:lang', (req, res) => {
+    const { lang } = req.params;
+    res.cookie('preferredLanguage', lang, { maxAge: 900000, httpOnly: true });
+    res.send(`Preferred language set to ${lang}`);
 });
 
-app.get('/', async(request, response, next) => {
-    response.setHeader('Content-Type', 'text/plain');
-    response.send("Hola mundo");
-    response.end(); 
-});
+// Ruta para mostrar contenido basado en el idioma preferido
+app.get('/', (req, res) => {
+    const preferredLanguage = req.cookies.preferredLanguage || 'es';
+    let message = '';
 
-app.get('/test_ejs', async(request, response, next) => {
-    response.render('usuarios/login');
-});
-
-const rutasUsuarios = require('./routes/usuarios.routes');
-app.use('/usuarios', rutasUsuarios);
-
-/*COOKIES*/ 
-app.get('/test_cookie', async(request, response, next) => {
-    response.setHeader('Content-Type', 'text/plain');
-    response.setHeader('Set-Cookie', 'mi_cookie=123; HttpOnly');
-    response.send("Hola Mundo");
-    response.end(); 
-});
-
-app.get('/test_value_cookie', async(request, response, next) => {
-    response.setHeader('Content-Type', 'text/plain');
-    response.send(request.cookies.mi_cookie);
-    response.end(); 
-});
-
-app.get('/test_session', async(request, response, next) => {
-    request.session.mi_variable = "valor"
-    response.setHeader('Content-Type', 'text/plain');
-    response.send(request.session.mi_variable);
-    response.end(); 
-});
-
-app.get('/test_session_variable', async(request, response, next) => {
-    response.setHeader('Content-Type', 'text/plain');
-    response.send(request.session.mi_variable);
-    response.end(); 
-});
-
-app.get('/logout', async(request, response, next) => {
-    request.session.destroy(() => {
-        response.redirect('/'); //Este código se ejecuta cuando la sesión se elimina.
-        response.clearCookie('');
-        response.send('User logout successfully');
-    });
-});
-
-app.get('/test_db', async(request, response, next) => {
-    let conn;
-
-    try{
-        conn = await pool.getConnection();
-        const rows = await conn.query("SELECT * FROM books");
-        console.log(rows);
-        const jsonS = JSON.stringify(rows);
-        response.writeHead(200, {'Content-type':'text/html'});
-        response.end(jsonS);
-    }catch(e){
-
+    switch (preferredLanguage) {
+        case 'en':
+            message = 'What benefits do you find in the MVC style? Greater ease of maintenance and error detection <br> Do you find any disadvantages in the MVC architectural style? It uses more resources and is more complex at first glance';
+            break;
+        case 'es':
+            message = '¿Qué beneficios encuentras en el estilo MVC? Mayor facilidad para mantenimiento, y detección de errores <br> ¿Encuentras alguna desventaja en el estilo arquitectónico MVC? Utiliza más recursos y es más complejo a simple vista';
+            break;
+        case 'fr':
+            message = 'Quels avantages trouvez-vous dans le style MVC ? Plus grande facilité de maintenance et de détection des erreurs <br> Trouvez-vous des inconvénients dans le style architectural MVC ? Il utilise plus de ressources et est plus complexe à première vue';
+            break;
+        default:
+            message = 'Hello! Welcome to our website.';
+            break;
     }
+
+    res.send(message);
+});
+
+// Ruta para borrar la preferencia de idioma
+app.get('/clear-language', (req, res) => {
+    res.clearCookie('preferredLanguage');
+    res.send('Preferred language has been cleared');
 });
 
 const server = http.createServer( (request, response) => {    
