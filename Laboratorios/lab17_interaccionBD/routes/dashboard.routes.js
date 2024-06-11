@@ -7,7 +7,9 @@ router.get('/test_json', (req, res)=>{
 });
 
 router.get('/', controller.render_dashboard);
-router.post('/login', controller.do_login);
+router.post('/create', controller.create_book);
+router.post('/update', controller.update_book);
+router.get('/view/:bookid', controller.view_book);
 
 
 module.exports = router;

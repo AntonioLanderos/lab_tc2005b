@@ -8,13 +8,12 @@ exports.Book = class {
         this.bookid = my_bookid;
     }
     //Este método servirá para guardar de manera persistente el nuevo objeto. 
-    async save() {
+    async save(bookid, title) {
         try {
             const connection = await db();
             const result = await connection.execute(
-            `INSERT INTO books (bookid, title) VALUES (?, ?)`,
-            [this.bookid, this.title]
-            );
+            `INSERT INTO books (bookid, title) 
+            VALUES (?, ?)`,[bookid, title]);
             await connection.release();
             return result;
         } catch (error) {
@@ -23,10 +22,32 @@ exports.Book = class {
     }
     //Este método servirá para buscar un usuario por username
     //Es estático ya que a diferencia de save(), el primero se guarda al crear un usuario siempre, pero en este segundo podmeos buscar un usuario sin crear un nuevo objeto usuario.
-     async fetchAll() {
+    async fetchAll() {
         try {
             const connection = await db();
-            const result = await connection.execute('Select * from books');
+            const result = await connection.execute('SELECT title FROM books');
+            await connection.release();
+            return result; 
+        } catch (error) {
+            throw error; 
+        }
+    }    
+
+    async update(bookid, title) {
+        try {
+            const connection = await db();
+            const result = await connection.execute('UPDATE riesgo SET title = ? WHERE bookid = ?', [title, bookid]);
+            await connection.release();
+            return result;
+        } catch (error) {
+            throw error; // Re-throw the error for proper handling
+        }
+    }
+
+    async get_book(bookid) {
+        try {
+            const connection = await db();
+            const result = await connection.execute('Select bookid, title from books WHERE bookid = ?', [bookid]);
             await connection.release();
             return result;
         } catch (error) {

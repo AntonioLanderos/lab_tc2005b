@@ -20,22 +20,8 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
 
-const books = [
-    { BookID: 1, Title: 'Libro 1', SeriesID: 1, AuthorID: 1 },
-    { BookID: 2, Title: 'Libro 2', SeriesID: 2, AuthorID: 2 },
-    // Añade más libros según sea necesario
-];
-
 const dashboardRoutes = require('./routes/dashboard.routes');
 app.use('/dashboard', dashboardRoutes);
-
-app.get('/', async(request, response, next) => {
-     response.render('dashboard',
-        {
-            books:books
-        }
-     )
-});
 
 const server = http.createServer( (request, response) => {    
     console.log(request.url);

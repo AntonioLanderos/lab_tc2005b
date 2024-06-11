@@ -3,14 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Libros</title>
+    <title>Dashboard</title>
 </head>
 <body>
-    <h1>Lista de Libros</h1>
+    <h2>All Books</h2>
     <ul>
-        <% books.forEach(function(book) { %>
-            <li><%= book.BookID %> - <%= book.Title %></li>
-        <% }); %>
+        <% for (let key in allBooks) { %>
+            <li>Title: <%= allBooks[key].title %></li>
+        <% } %>
     </ul>
+
+    <h2>Add New Book</h2>
+    <form action="/dashboard/create" method="POST">
+        <input type="text" name="bookid" placeholder="Book ID" required>
+        <input type="text" name="title" placeholder="Title" required>
+        <button type="submit">Add Book</button>
+    </form>
+
+    <h2>Update Book</h2>
+    <form action="/dashboard/update" method="POST">
+        <input type="text" name="bookid" placeholder="Book ID" required>
+        <input type="text" name="title" placeholder="New Title" required>
+        <button type="submit">Update Book</button>
+    </form>
 </body>
 </html>
+
