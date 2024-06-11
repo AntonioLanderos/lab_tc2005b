@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batalla Naval</title>
+    <style>
+        table { border-collapse: collapse; }
+        td { width: 30px; height: 30px; text-align: center; border: 1px solid black; }
+        .empty { background-color: white; }
+        .ship { background-color: blue; }
+        .hit { background-color: red; }
+        pre {color: red;}
+    </style>
+</head>
+<body>
+    <h1>Batalla Naval</h1>
+    <h2>Instrucciones para Jugar</h2>
+    <ol>
+        <li><strong>Crear un Nuevo Juego:</strong>
+            <ul>
+                <li>Ruta: <code>/game/create</code></li>
+                <li>Descripción: Esta ruta reinicia el juego y lo prepara para una nueva partida.</li>
+            </ul>
+        </li>
+        <li><strong>Posicionar los Barcos:</strong>
+            <ul>
+                <li>Selecciona el jugador que posicionará los barcos</li>
+                <li>Introduce las posiciones de tus barcos en formato json, sigue el ejemplo, para indicar las coordenadas</li>
+                <li>Descripción: Esta tabla coloca los barcos para el jugador especificado. Envía un JSON con las posiciones de los barcos.</li>
+                <li>Ejemplo de JSON para input en el siguiente orden:
+                    <ol>
+                        <li>Porta-aviones</li>
+                        <li>Crucero 1</li>
+                        <li>Crucero 2</li>
+                        <li>Destructor 1</li>
+                        <li>Destructor 2</li>
+                        <li>Destructor 3</li>
+                        <li>Submarino 1</li>
+                        <li>Submarino 2</li>
+                        <li>Submarino 3</li>
+                        <li>Submarino 4</li>
+                    </ol>
+                    <pre>
+                        
+                        [
+                            [{"x": 0, "y": 0}, {"x": 0, "y": 1}, {"x": 0, "y": 2}, {"x": 0, "y": 3}, {"x": 0, "y": 4}], 
+                            [{"x": 1, "y": 0}, {"x": 1, "y": 1}, {"x": 1, "y": 2}, {"x": 1, "y": 3}],
+                            [{"x": 2, "y": 0}, {"x": 2, "y": 1}, {"x": 2, "y": 2}, {"x": 2, "y": 3}],
+                            [{"x": 3, "y": 0}, {"x": 3, "y": 1}, {"x": 3, "y": 2}],
+                            [{"x": 4, "y": 0}, {"x": 4, "y": 1}, {"x": 4, "y": 2}],
+                            [{"x": 5, "y": 0}, {"x": 5, "y": 1}, {"x": 5, "y": 2}],
+                            [{"x": 6, "y": 0}, {"x": 6, "y": 1}],
+                            [{"x": 7, "y": 0}, {"x": 7, "y": 1}],
+                            [{"x": 8, "y": 0}, {"x": 8, "y": 1}],
+                            [{"x": 9, "y": 0}, {"x": 9, "y": 1}]
+                        ]
+                    </pre>
+                </li>
+            </ul>
+        </li>
+        <li><strong>Ver el Estado del Juego:</strong>
+            <ul>
+                <li>Ruta: <code>/game/status</code></li>
+                <li>Descripción: Esta ruta devuelve el estado actual del juego, incluyendo los tableros de ambos jugadores. 0 - indica sin barco, 1 - indica hay barco, y 2 - indica que fue atacado</li>
+            </ul>
+        </li>
+        <li><strong>Ver el Resumen del Jugador:</strong>
+            <ul>
+                <li>Ruta: <code>/player/:playerNumber</code></li>
+                <li>Descripción: Esta ruta devuelve el tablero del jugador especificado.</li>
+            </ul>
+        </li>
+    </ol>
+    <h1>Posicionar Barcos</h1>
+    <form id="placeShipsForm">
+        <label for="player">Jugador:</label>
+        <select id="player" name="player">
+            <option value="1">Jugador 1</option>
+            <option value="2">Jugador 2</option>
+        </select>
+        <textarea id="ships" name="ships" rows="10" cols="50" placeholder="Ingresa JSON"></textarea>
+        <button type="submit">Enviar</button>
+    </form>
+
+    <h1>Tomar Turno</h1>
+    <form id="takeTurnForm">
+        <label for="turnPlayer">Jugador:</label>
+        <select id="turnPlayer" name="turnPlayer">
+            <option value="1">Jugador 1</option>
+            <option value="2">Jugador 2</option>
+        </select>
+        <input type="number" id="x" name="x" placeholder="x" min="0" max="9">
+        <input type="number" id="y" name="y" placeholder="y" min="0" max="9">
+        <button type="submit">Enviar</button>
+    </form>
+
+    <h1>Tablero del Jugador</h1>
+    <button onclick="fetchPlayerBoard(1)">Ver Tablero del Jugador 1</button>
+    <button onclick="fetchPlayerBoard(2)">Ver Tablero del Jugador 2</button>
+    <div id="playerBoard"></div>
+
+    <script>
+        document.getElementById('placeShipsForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const player = document.getElementById('player').value;
+            const shipsText = document.getElementById('ships').value;
+            alert(`Enviando barcos para el jugador ${player}:\n${shipsText}`);
+            
+            try {
+                const ships = JSON.parse(shipsText);
+                const response = await fetch(`/game/placeShips/${player}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ ships: ships }) // Asegúrate de que el cuerpo esté en el formato esperado por el servidor
+                });
+
+                const result = await response.json();
+                alert(`Respuesta del servidor: ${JSON.stringify(result, null, 2)}`);
+                document.getElementById('response').innerText = JSON.stringify(result, null, 2);
+            } catch (error) {
+                alert(`Error: ${error.message}`);
+            }
+        });
+
+        document.getElementById('takeTurnForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const player = document.getElementById('turnPlayer').value;
+            const x = parseInt(document.getElementById('x').value);
+            const y = parseInt(document.getElementById('y').value);
+            alert(`Jugador ${player} está atacando a la posición (${x}, ${y})`);
+
+            try {
+                const response = await fetch(`/game/turn/${player}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ x, y }) // Enviar coordenadas del disparo
+                });
+
+                const result = await response.json();
+                alert(`Respuesta del servidor: ${JSON.stringify(result, null, 2)}`);
+                document.getElementById('turnResponse').innerText = JSON.stringify(result, null, 2);
+            } catch (error) {
+                alert(`Error: ${error.message}`);
+            }
+        });
+
+        async function fetchPlayerBoard(player) {
+            try {
+                const response = await fetch(`/player/${player}`);
+                const result = await response.json();
+                alert(`Tablero del Jugador ${player}: ${JSON.stringify(result.tableroPlayer, null, 2)}`);
+                renderBoard(result.tableroPlayer);
+            } catch (error) {
+                alert(`Error: ${error.message}`);
+            }
+        }
+
+        function renderBoard(board) {
+            if (!board) {
+                alert("Tablero no encontrado");
+                return;
+            }
+
+            const boardDiv = document.getElementById('playerBoard');
+            let html = '<table>';
+            for (let row of board) {
+                html += '<tr>';
+                for (let cell of row) {
+                    if (cell === 0) {
+                        html += '<td class="empty"></td>';
+                    } else if (cell === 1) {
+                        html += '<td class="ship"></td>';
+                    } else if (cell === 2) {
+                        html += '<td class="hit"></td>';
+                    }
+                }
+                html += '</tr>';
+            }
+            html += '</table>';
+            boardDiv.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
+
