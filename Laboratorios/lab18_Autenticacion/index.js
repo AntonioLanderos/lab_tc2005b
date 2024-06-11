@@ -20,65 +20,13 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', async(request, response, next) => {
-    response.setHeader('Content-Type', 'text/plain');
-    response.send("Hola mundo");
-    response.end(); 
-});
-
-app.get('/test_ejs', async(request, response, next) => {
-    response.render('usuarios/login');
-});
-
 const rutasUsuarios = require('./routes/usuarios.routes');
 app.use('/usuarios', rutasUsuarios);
-
-/*COOKIES*/ 
-app.get('/test_cookie', async(request, response, next) => {
-    response.setHeader('Content-Type', 'text/plain');
-    response.setHeader('Set-Cookie', 'mi_cookie=123; HttpOnly');
-    response.send("Hola Mundo");
-    response.end(); 
-});
-
-app.get('/test_value_cookie', async(request, response, next) => {
-    response.setHeader('Content-Type', 'text/plain');
-    response.send(request.cookies.mi_cookie);
-    response.end(); 
-});
-
-app.get('/test_session', async(request, response, next) => {
-    request.session.mi_variable = "valor"
-    response.setHeader('Content-Type', 'text/plain');
-    response.send(request.session.mi_variable);
-    response.end(); 
-});
-
-app.get('/test_session_variable', async(request, response, next) => {
-    response.setHeader('Content-Type', 'text/plain');
-    response.send(request.session.mi_variable);
-    response.end(); 
-});
 
 app.get('/logout', async(request, response, next) => {
     request.session.destroy(() => {
         response.redirect('/'); //Este código se ejecuta cuando la sesión se elimina.
     });
-});
-
-app.get('/test_db', async(request, response, next) => {
-    let conn;
-
-    try{
-        conn = await pool.getConnection();
-        const rows = await conn.query("SELECT * FROM books");
-        console.log(rows);
-        const jsonS = JSON.stringify(rows);
-        response.writeHead(200, {'Content-type':'text/html'});
-        response.end(jsonS);
-    }catch(e){
-
-    }
 });
 
 const server = http.createServer( (request, response) => {    
