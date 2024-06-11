@@ -4,7 +4,6 @@ const Book = require("../models/dashboard.model.js");
 module.exports.render_dashboard = async (req, res) => {
     const newBook = new Book.Book();
     const allBooks = await newBook.fetchAll();
-    console.log(allBooks);
     res.render("dashboard", {
         allBooks: allBooks 
     });
