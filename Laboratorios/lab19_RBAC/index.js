@@ -20,12 +20,6 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', async(request, response, next) => {
-    response.setHeader('Content-Type', 'text/plain');
-    response.send("Hola mundo");
-    response.end(); 
-});
-
 app.get('/test_ejs', async(request, response, next) => {
     response.render('usuarios/login');
 });
