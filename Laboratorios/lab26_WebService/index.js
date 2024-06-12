@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const log = console.log;
 
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'public'))); // Servir archivos estáticos desde 'public'
+app.use(express.static(path.join(__dirname, 'public'))); 
 
 // Variables globales
 const globalVars = {
@@ -28,6 +28,18 @@ app.get('/game/create', (req, res) => {
     globalVars.gameState = globalVars.SETTING;
 
     res.status(200).json({ code: 200, msg: "A new game has been settled." });
+});
+
+// Decidir quién comienza
+app.get('/dice', (req, res) => {
+    if (globalVars.gameState !== globalVars.SETTING) {
+        return res.status(400).json({ code: 400, msg: "Cannot roll dice. The game is not in the setting state." });
+    }
+
+    globalVars.playerStart = Math.floor(Math.random() * 2) + 1; // 1 o 2
+    globalVars.gameState = globalVars.PLAYING;
+
+    res.status(200).json({ code: 200, msg: `Player ${globalVars.playerStart} starts.` });
 });
 
 // Colocar los barcos
@@ -78,7 +90,7 @@ app.post('/game/placeShips/:playerid', (req, res) => {
 
     // Si ambos jugadores han colocado sus barcos, cambia el estado del juego a PLAYING
     if (globalVars.tableroPlayer1.flat().includes(1) && globalVars.tableroPlayer2.flat().includes(1)) {
-        globalVars.gameState = globalVars.PLAYING;
+        globalVars.gameState = globalVars.SETTING;
     }
 
     return res.status(200).json({ code: 200, msg: `Ships placed for player ${player}.`, map: tablero });
@@ -104,6 +116,14 @@ app.post('/game/turn/:playerid', (req, res) => {
     const player = parseInt(req.params.playerid, 10);
     const { x, y } = req.body;
 
+    if (![1, 2].includes(player)) {
+        return res.status(400).json({ code: 400, msg: "Invalid player number. Please provide either 1 or 2." });
+    }
+
+    if (player !== globalVars.playerStart) {
+        return res.status(400).json({ code: 400, msg: `It's not player ${player}'s turn.` });
+    }
+
     if (isNaN(x) || isNaN(y) || x < 0 || x > 9 || y < 0 || y > 9) {
         return res.status(400).json({ code: 400, msg: "Invalid coordinates." });
     }
@@ -118,6 +138,11 @@ app.post('/game/turn/:playerid', (req, res) => {
 
     if (hit) {
         tablero[x][y] = 2; // Marcar como golpeado
+        if (player === 1) {
+            globalVars.tableroPlayer2 = tablero;
+        } else {
+            globalVars.tableroPlayer1 = tablero;
+        }
         return res.status(200).json({ code: 200, msg: "Hit!", map: tablero });
     } else {
         globalVars.playerStart = player === 1 ? 2 : 1; // Cambiar de turno
@@ -142,7 +167,7 @@ app.get('/player/:playerNumber', (req, res) => {
     });
 });
 
-// Iniciar el servidor
+
 app.listen(3000, () => {
     log('Server listening to port 3000');
 });

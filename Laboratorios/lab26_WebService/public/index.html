@@ -5,15 +5,110 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Batalla Naval</title>
     <style>
-        table { border-collapse: collapse; }
-        td { width: 30px; height: 30px; text-align: center; border: 1px solid black; }
-        .empty { background-color: white; }
-        .ship { background-color: blue; }
-        .hit { background-color: red; }
-        pre {color: red;}
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1, h2 {
+            color: #00509e;
+        }
+        h1 {
+            margin-top: 20px;
+        }
+        table { 
+            border-collapse: collapse; 
+            margin: 20px 0;
+        }
+        td { 
+            width: 30px; 
+            height: 30px; 
+            text-align: center; 
+            border: 1px solid #333; 
+        }
+        .empty { 
+            background-color: #ffffff; 
+        }
+        .ship { 
+            background-color: #1e90ff; 
+        }
+        .hit { 
+            background-color: #ff4500; 
+        }
+        form {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        form label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        form select, form input, form textarea, form button {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        form button {
+            background-color: #00509e;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #003f7f;
+        }
+        #playerBoard {
+            margin: 20px 0;
+        }
+        pre {
+            background-color: #f7f7f7;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        button {
+            background-color: #00509e;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #003f7f;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li {
+            margin-bottom: 10px;
+        }
+        code {
+            background-color: #f7f7f7;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
+    <!-- Equipo: Antonio, Mónica-->
     <h1>Batalla Naval</h1>
     <h2>Instrucciones para Jugar</h2>
     <ol>
@@ -23,9 +118,8 @@
                 <li>Descripción: Esta ruta reinicia el juego y lo prepara para una nueva partida.</li>
             </ul>
         </li>
-        <li><strong>Posicionar los Barcos:</strong>
+        <li><strong>Colocar los Barcos:</strong>
             <ul>
-                <li>Selecciona el jugador que posicionará los barcos</li>
                 <li>Introduce las posiciones de tus barcos en formato json, sigue el ejemplo, para indicar las coordenadas</li>
                 <li>Descripción: Esta tabla coloca los barcos para el jugador especificado. Envía un JSON con las posiciones de los barcos.</li>
                 <li>Ejemplo de JSON para input en el siguiente orden:
@@ -42,27 +136,34 @@
                         <li>Submarino 4</li>
                     </ol>
                     <pre>
-                        
-                        [
-                            [{"x": 0, "y": 0}, {"x": 0, "y": 1}, {"x": 0, "y": 2}, {"x": 0, "y": 3}, {"x": 0, "y": 4}], 
-                            [{"x": 1, "y": 0}, {"x": 1, "y": 1}, {"x": 1, "y": 2}, {"x": 1, "y": 3}],
-                            [{"x": 2, "y": 0}, {"x": 2, "y": 1}, {"x": 2, "y": 2}, {"x": 2, "y": 3}],
-                            [{"x": 3, "y": 0}, {"x": 3, "y": 1}, {"x": 3, "y": 2}],
-                            [{"x": 4, "y": 0}, {"x": 4, "y": 1}, {"x": 4, "y": 2}],
-                            [{"x": 5, "y": 0}, {"x": 5, "y": 1}, {"x": 5, "y": 2}],
-                            [{"x": 6, "y": 0}, {"x": 6, "y": 1}],
-                            [{"x": 7, "y": 0}, {"x": 7, "y": 1}],
-                            [{"x": 8, "y": 0}, {"x": 8, "y": 1}],
-                            [{"x": 9, "y": 0}, {"x": 9, "y": 1}]
-                        ]
+[
+    [{"x": 0, "y": 0}, {"x": 0, "y": 1}, {"x": 0, "y": 2}, {"x": 0, "y": 3}, {"x": 0, "y": 4}], 
+    [{"x": 1, "y": 0}, {"x": 1, "y": 1}, {"x": 1, "y": 2}, {"x": 1, "y": 3}],
+    [{"x": 2, "y": 0}, {"x": 2, "y": 1}, {"x": 2, "y": 2}, {"x": 2, "y": 3}],
+    [{"x": 3, "y": 0}, {"x": 3, "y": 1}, {"x": 3, "y": 2}],
+    [{"x": 4, "y": 0}, {"x": 4, "y": 1}, {"x": 4, "y": 2}],
+    [{"x": 5, "y": 0}, {"x": 5, "y": 1}, {"x": 5, "y": 2}],
+    [{"x": 6, "y": 0}, {"x": 6, "y": 1}],
+    [{"x": 7, "y": 0}, {"x": 7, "y": 1}],
+    [{"x": 8, "y": 0}, {"x": 8, "y": 1}],
+    [{"x": 9, "y": 0}, {"x": 9, "y": 1}]
+]
                     </pre>
                 </li>
             </ul>
         </li>
+        <li><strong>Lanzar el Dado para Decidir Quién Comienza:</strong>
+            <ul>
+                <li>Descripción: Esta ruta decide al azar cuál jugador comienza y cambia el estado del juego a "PLAYING".</li>
+            </ul>
+        </li>
+        <li><strong>Tomar Turnos para Atacar:</strong>
+            <ul>
+                <li>Descripción: Esta ruta permite al jugador especificado atacar una posición. Envía un JSON con las coordenadas del disparo.</li>
         <li><strong>Ver el Estado del Juego:</strong>
             <ul>
                 <li>Ruta: <code>/game/status</code></li>
-                <li>Descripción: Esta ruta devuelve el estado actual del juego, incluyendo los tableros de ambos jugadores. 0 - indica sin barco, 1 - indica hay barco, y 2 - indica que fue atacado</li>
+                <li>Descripción: Esta ruta devuelve el estado actual del juego, incluyendo los tableros de ambos jugadores. 0 - indica sin barco, 1 - con barco, y 2 - barco atacado</li>
             </ul>
         </li>
         <li><strong>Ver el Resumen del Jugador:</strong>
@@ -71,8 +172,10 @@
                 <li>Descripción: Esta ruta devuelve el tablero del jugador especificado.</li>
             </ul>
         </li>
+        
     </ol>
-    <h1>Posicionar Barcos</h1>
+
+    <h1>Colocar Barcos</h1>
     <form id="placeShipsForm">
         <label for="player">Jugador:</label>
         <select id="player" name="player">
@@ -83,7 +186,11 @@
         <button type="submit">Enviar</button>
     </form>
 
-    <h1>Tomar Turno</h1>
+    <h2>Lanzar el Dado para Decidir Quién Comienza</h2>
+    <button id="rollDice">Lanzar Dado</button>
+    <div id="diceResult"></div>
+
+    <h2>Tomar Turno</h2>
     <form id="takeTurnForm">
         <label for="turnPlayer">Jugador:</label>
         <select id="turnPlayer" name="turnPlayer">
@@ -115,12 +222,23 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ ships: ships }) // Asegúrate de que el cuerpo esté en el formato esperado por el servidor
+                    body: JSON.stringify({ ships: ships }) 
                 });
 
                 const result = await response.json();
                 alert(`Respuesta del servidor: ${JSON.stringify(result, null, 2)}`);
                 document.getElementById('response').innerText = JSON.stringify(result, null, 2);
+            } catch (error) {
+                alert(`Error: ${error.message}`);
+            }
+        });
+
+        document.getElementById('rollDice').addEventListener('click', async function() {
+            try {
+                const response = await fetch(`/dice`);
+                const result = await response.json();
+                alert(`Respuesta del servidor: ${JSON.stringify(result, null, 2)}`);
+                document.getElementById('diceResult').innerText = JSON.stringify(result, null, 2);
             } catch (error) {
                 alert(`Error: ${error.message}`);
             }
@@ -189,4 +307,3 @@
     </script>
 </body>
 </html>
-
